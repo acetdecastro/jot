@@ -6,12 +6,27 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
+use App\User;
 use App\Contact;
 use Carbon\Carbon;
 
 class ContactTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected $user;
+
+    /*
+    * This method runs before any test runs
+    * Creates a user on every test
+    * returns void
+    */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->user = factory(User::class)->create();
+    }
 
     private $requiredFields = [
         'name',
@@ -27,10 +42,58 @@ class ContactTest extends TestCase
             'email' => 'test@email.com',
             'birthday' => '03/17/1993',
             'company' => 'ABC Company',
+            'api_token' => $this->user->api_token,
         ];
     }
 
-    /** @test */    
+    /** @test */
+    public function unauthenticatedUserRedirectedToLoginWhenDoingCRUD()
+    {
+        $response = $this->post(
+            '/api/contacts',
+            array_merge($this->validData(), ['api_token' => ''])
+        );
+
+        $response->assertRedirect('/login');
+        $this->assertCount(0, Contact::all());
+    }
+
+    /** @test */
+    /*
+    * 2 users and one contact for eacch
+    * First user is the one made on setUp()
+    */
+    public function fetchAllContactsOfAuthenticatedUser()
+    {   
+        $anotherUser = factory(User::class)->create();
+
+        $contact = factory(Contact::class)->create(['user_id' => $this->user->id]);
+        $anotherContact = factory(Contact::class)->create(['user_id' => $anotherUser->id]);
+
+        $response = $this->get('/api/contacts?api_token=' . $this->user->api_token);
+
+        /* 
+        * Asserts that there is a JSON returned
+        * Asserts that the contact id is equal to the first user's related contact
+        */
+        $response->assertJsonCount(1)
+                 ->assertJson([['id' => $contact->id]]);
+    }
+
+    /** @test */
+    public function anAuthenticatedUserCanAddAContact()
+    {
+        $this->post('/api/contacts', $this->validData());
+
+        $contact = Contact::first();
+
+        $this->assertEquals('Test Name', $contact->name);
+        $this->assertEquals('test@email.com', $contact->email);
+        $this->assertEquals('03/17/1993', $contact->birthday->format('m/d/Y'));
+        $this->assertEquals('ABC Company', $contact->company);
+    }
+
+    /** @test */
     public function fieldsAreRequired()
     {
         collect($this->requiredFields)
@@ -45,7 +108,7 @@ class ContactTest extends TestCase
             });
     }
 
-    /** @test */    
+    /** @test */
     public function emailMustBeValid()
     {
         $response = $this->post(
@@ -57,11 +120,9 @@ class ContactTest extends TestCase
         $this->assertCount(0, Contact::all());
     }
 
-    /** @test */    
+    /** @test */
     public function birthdayMustBeValid()
     {
-        $this->withoutExceptionHandling();
-
         $response = $this->post(
             '/api/contacts',
             array_merge($this->validData(), ['birthday' => 'March 17, 1993'])
@@ -73,31 +134,14 @@ class ContactTest extends TestCase
     }
 
     /** @test */
-    public function aContactCanBeAdded()
-    {
-        $this->withoutExceptionHandling();
-
-        $this->post('/api/contacts', [
-            'name' => 'Test Name',
-            'email' => 'test@email.com',
-            'birthday' => '03/17/1993',
-            'company' => 'ABC Company',
-        ]);
-
-        $contact = Contact::first();
-
-        $this->assertEquals('Test Name', $contact->name);
-        $this->assertEquals('test@email.com', $contact->email);
-        $this->assertEquals('03/17/1993', $contact->birthday->format('m/d/Y'));
-        $this->assertEquals('ABC Company', $contact->company);
-    }
-
-    /** @test */
     public function aContactCanBeRetrieved()
     {
-        $contact = factory(Contact::class)->create();
+        $contact = factory(Contact::class)->create(['user_id' => $this->user->id]);
 
-        $response = $this->get('/api/contacts/' . $contact->id);
+        $response = $this->get(
+            '/api/contacts/' . $contact->id . 
+            '?api_token=' . $this->user->api_token
+        );
 
         $response->assertJson([
             'name' => $contact->name,
@@ -105,14 +149,28 @@ class ContactTest extends TestCase
             'birthday' => $contact->birthday,
             'company' => $contact->company,
         ]);
-    } 
+    }
+
+    /** @test */
+    public function aContactCanBeRetrievedOnlyByItsUser()
+    {
+        // First user is the one made on setUp()
+        $contact = factory(Contact::class)->create(['user_id' => $this->user->id]);
+
+        $anotherUser = factory(User::class)->create();
+
+        $response = $this->get(
+            '/api/contacts/' . $contact->id . 
+            '?api_token=' . $anotherUser->api_token
+        );
+
+        $response->assertStatus(403);
+    }
 
     /** @test */
     public function aContactCanBePatched()
     {
-        $this->withoutExceptionHandling();
-
-        $contact = factory(Contact::class)->create();
+        $contact = factory(Contact::class)->create(['user_id' => $this->user->id]);
 
         $response = $this->patch('/api/contacts/' . $contact->id, $this->validData());
 
@@ -122,17 +180,48 @@ class ContactTest extends TestCase
         $this->assertEquals('test@email.com', $contact->email);
         $this->assertEquals('03-17-1993', $contact->birthday->format('m-d-Y'));
         $this->assertEquals('ABC Company', $contact->company);
-    } 
+    }
+
+     /** @test */
+     public function aContactCanBePatchedOnlyByItsUser()
+     {
+        $contact = factory(Contact::class)->create();
+
+        $anotherUser = factory(User::class)->create();
+
+        $response = $this->patch(
+            '/api/contacts/' . $contact->id,
+            array_merge($this->validData(), ['api_token' => $anotherUser->api_token])
+        );
+
+        $response->assertStatus(403);
+     }
 
     /** @test */
     public function aContactCanBeDeleted()
     {
-        $this->withoutExceptionHandling();
+        $contact = factory(Contact::class)->create(['user_id' => $this->user->id]);
 
-        $contact = factory(Contact::class)->create();
-
-        $this->delete('/api/contacts/' . $contact->id);
+        $this->delete(
+            '/api/contacts/' . $contact->id,
+            ['api_token' => $this->user->api_token]
+        );
 
         $this->assertCount(0, Contact::all());
-    }    
+    }
+
+    /** @test */
+    public function aContactCanBeDeletedOnlyByItsUser()
+    {
+        $contact = factory(Contact::class)->create();
+
+        $anotherUser = factory(User::class)->create();
+
+        $response = $this->delete(
+            '/api/contacts/' . $contact->id,
+            ['api_token' => $this->user->api_token]
+        );
+
+        $response->assertStatus(403);
+    }
 }

@@ -9,23 +9,49 @@ use App\Http\Requests\ContactRequest;
 
 class ContactController extends Controller
 {
+    private function isContactOwnedByAuthenticatedUser($contact)
+    {
+        if (request()->user()->isNot($contact->user)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public function index()
+    {
+        return request()->user()->contacts;
+    }
+
     public function store(ContactRequest $request)
     {
-        Contact::create($request->validated());
+        request()->user()->contacts()->create($request->validated());
     }
     
     public function show(Contact $contact)
     {
-        return $contact;
+        if ($this->isContactOwnedByAuthenticatedUser($contact)) {
+            return $contact;
+        } else {
+            return response([], 403);
+        }
     }
 
     public function update(ContactRequest $request, Contact $contact)
     {
-        $contact->update($request->validated());
+        if ($this->isContactOwnedByAuthenticatedUser($contact)) {
+            $contact->update($request->validated());
+        } else {
+            return response([], 403);
+        }       
     }
 
     public function destroy(Contact $contact)
     {
-        $contact->delete();
+        if ($this->isContactOwnedByAuthenticatedUser($contact)) {
+            $contact->delete();
+        } else {
+            return response([], 403);
+        }
     }
 }
