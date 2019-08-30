@@ -6,6 +6,7 @@ use App\Contact;
 use Illuminate\Http\Request;
 
 use App\Http\Requests\ContactRequest;
+use App\Http\Resources\Contact as ContactResource;
 
 class ContactController extends Controller
 {
@@ -13,7 +14,7 @@ class ContactController extends Controller
     {
         $this->authorize('viewAny', Contact::class);
 
-        return request()->user()->contacts;
+        return ContactResource::collection(request()->user()->contacts);
     }
 
     public function store(ContactRequest $request)
@@ -27,7 +28,7 @@ class ContactController extends Controller
     {
         $this->authorize('view', $contact);
         
-        return $contact;
+        return new ContactResource($contact);
     }
 
     public function update(ContactRequest $request, Contact $contact)

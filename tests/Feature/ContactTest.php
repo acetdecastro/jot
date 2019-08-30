@@ -76,8 +76,12 @@ class ContactTest extends TestCase
         * Asserts that there is a JSON returned
         * Asserts that the contact id is equal to the first user's related contact
         */
-        $response->assertJsonCount(1)
-                 ->assertJson([['id' => $contact->id]]);
+        $response->assertJsonCount(1);
+        $response->assertJson([
+            'data' => [
+                ['contact_id' => $contact->id]
+            ]
+        ]);
     }
 
     /** @test */
@@ -144,10 +148,14 @@ class ContactTest extends TestCase
         );
 
         $response->assertJson([
-            'name' => $contact->name,
-            'email' => $contact->email,
-            'birthday' => $contact->birthday,
-            'company' => $contact->company,
+            'data' => [
+                'contact_id' => $contact->id,
+                'name' => $contact->name,
+                'email' => $contact->email,
+                'birthday' => $contact->birthday->format('m/d/Y'),
+                'company' => $contact->company,
+                'last_updated' => $contact->updated_at->diffForHumans(),
+            ] 
         ]);
     }
 
@@ -182,9 +190,9 @@ class ContactTest extends TestCase
         $this->assertEquals('ABC Company', $contact->company);
     }
 
-     /** @test */
-     public function aContactCanBePatchedOnlyByItsUser()
-     {
+    /** @test */
+    public function aContactCanBePatchedOnlyByItsUser()
+    {
         $contact = factory(Contact::class)->create();
 
         $anotherUser = factory(User::class)->create();
@@ -195,7 +203,7 @@ class ContactTest extends TestCase
         );
 
         $response->assertStatus(403);
-     }
+    }
 
     /** @test */
     public function aContactCanBeDeleted()
