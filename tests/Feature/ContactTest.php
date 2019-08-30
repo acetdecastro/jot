@@ -6,6 +6,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
+use Symfony\Component\HttpFoundation\Response;
 use App\User;
 use App\Contact;
 use Carbon\Carbon;
@@ -47,7 +48,7 @@ class ContactTest extends TestCase
     }
 
     /** @test */
-    public function unauthenticatedUserRedirectedToLoginWhenDoingCRUD()
+    public function unauthenticatedUserRedirectedToLoginWhenAddingContact()
     {
         $response = $this->post(
             '/api/contacts',
@@ -79,7 +80,11 @@ class ContactTest extends TestCase
         $response->assertJsonCount(1);
         $response->assertJson([
             'data' => [
-                ['contact_id' => $contact->id]
+                [
+                    'data' => [
+                        'contact_id' => $contact->id
+                    ]
+                ]
             ]
         ]);
     }
@@ -87,7 +92,7 @@ class ContactTest extends TestCase
     /** @test */
     public function anAuthenticatedUserCanAddAContact()
     {
-        $this->post('/api/contacts', $this->validData());
+        $response = $this->post('/api/contacts', $this->validData());
 
         $contact = Contact::first();
 
@@ -95,6 +100,16 @@ class ContactTest extends TestCase
         $this->assertEquals('test@email.com', $contact->email);
         $this->assertEquals('03/17/1993', $contact->birthday->format('m/d/Y'));
         $this->assertEquals('ABC Company', $contact->company);
+
+        $response->assertStatus(Response::HTTP_CREATED);
+        $response->assertJson([
+            'data' => [
+                'contact_id' => $contact->id
+            ],
+            'links' => [
+                'self' => $contact->path()
+            ]
+        ]);
     }
 
     /** @test */
@@ -172,7 +187,7 @@ class ContactTest extends TestCase
             '?api_token=' . $anotherUser->api_token
         );
 
-        $response->assertStatus(403);
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
     }
 
     /** @test */
@@ -188,6 +203,16 @@ class ContactTest extends TestCase
         $this->assertEquals('test@email.com', $contact->email);
         $this->assertEquals('03-17-1993', $contact->birthday->format('m-d-Y'));
         $this->assertEquals('ABC Company', $contact->company);
+        
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJson([
+            'data' => [
+                'contact_id' => $contact->id
+            ],
+            'links' => [
+                'self' => $contact->path()
+            ]
+        ]);
     }
 
     /** @test */
@@ -202,7 +227,7 @@ class ContactTest extends TestCase
             array_merge($this->validData(), ['api_token' => $anotherUser->api_token])
         );
 
-        $response->assertStatus(403);
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
     }
 
     /** @test */
@@ -210,12 +235,14 @@ class ContactTest extends TestCase
     {
         $contact = factory(Contact::class)->create(['user_id' => $this->user->id]);
 
-        $this->delete(
+        $response = $this->delete(
             '/api/contacts/' . $contact->id,
             ['api_token' => $this->user->api_token]
         );
 
         $this->assertCount(0, Contact::all());
+
+        $response->assertStatus(Response::HTTP_NO_CONTENT);
     }
 
     /** @test */
@@ -230,6 +257,6 @@ class ContactTest extends TestCase
             ['api_token' => $this->user->api_token]
         );
 
-        $response->assertStatus(403);
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
     }
 }
