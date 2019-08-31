@@ -51,7 +51,7 @@
                 </div>
 
                 <div class="pt-6">
-                    <button type="submit" class="w-full rounded py-2 px-3 uppercase bg-gray-400 text-blue-800 font-bold hover:bg-gray-200">Sign Up</button>
+                    <button type="submit" class="focus:outline-none w-full rounded py-2 px-3 uppercase bg-gray-400 text-blue-800 font-bold hover:bg-gray-200">Sign Up</button>
                 </div>
 
                 <div class="pt-6 flex justify-between text-white text-sm font-bold">

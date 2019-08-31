@@ -78,7 +78,7 @@
             <div class="pt-6">
                 <button
                     type="submit"
-                    class="bg-gray-400 uppercase text-blue-800 py-2 w-full rounded font-bold hover:bg-gray-200"
+                    class="bg-gray-400 uppercase text-blue-800 py-2 w-full rounded font-bold hover:bg-gray-200 focus:outline-none"
                 >
                     Log In
                 </button>
