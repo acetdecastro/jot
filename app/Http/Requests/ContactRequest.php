@@ -40,7 +40,7 @@ class ContactRequest extends FormRequest
     {
         return [
             'name.required' => 'Name is required.',
-            'email.required' => 'Email is required.',
+            'email.required' => 'E-mail is required.',
             'email.email' => 'Email must be valid.',
             'birthday.required' => 'Birthday is required.',
             'company.required' => 'Company is required.',

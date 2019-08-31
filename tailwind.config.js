@@ -4,6 +4,9 @@ module.exports = {
       width: {
         '96': '24rem'
       },
+      container: {
+        center: true,
+      },
     }
   },
   variants: {},

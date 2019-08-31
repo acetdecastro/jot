@@ -22,25 +22,23 @@
                     {{ __('E-mail') }}
                 </label>
 
-                <div class="">
-                    <input
-                        id="email"
-                        type="email"
-                        class="pt-8 p-3 w-full rounded bg-blue-800 text-gray-100 outline-none focus:bg-blue-700 
-                            @error('email') border border-red-600 @enderror"
-                        name="email"
-                        value="{{ old('email') }}"
-                        autocomplete="email"
-                        autofocus
-                        placeholder="your@email.com"
-                    >
+                <input
+                    id="email"
+                    type="email"
+                    class="pt-8 p-3 w-full rounded bg-blue-800 text-gray-100 outline-none focus:bg-blue-700 
+                        @error('email') border border-red-600 @enderror"
+                    name="email"
+                    value="{{ old('email') }}"
+                    autocomplete="email"
+                    autofocus
+                    placeholder="your@email.com"
+                >
 
-                    @error('email')
-                        <span class="text-xs text-red-500 pt-1" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
+                @error('email')
+                    <span class="text-xs text-red-500 pt-1" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
             </div>
 
             <div class="relative pt-3">
