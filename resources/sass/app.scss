@@ -61,4 +61,12 @@
     @apply text-white bg-blue-300
 }
 
+.user-circle-header {
+    @apply rounded-full text-white bg-blue-300 shadow-md w-12 h-12 flex justify-center items-center border-2 border-blue-500 font-bold text-xl
+}
+
+.user-circle-contact-show {
+    @apply rounded-full text-white bg-blue-300 shadow-md w-24 h-24 flex justify-center items-center border-2 border-blue-500 font-bold text-3xl
+}
+
 @tailwind utilities;

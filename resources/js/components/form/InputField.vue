@@ -1,6 +1,6 @@
 <template>
     <div class="relative pb-4">
-        <label :for="fieldName" class="pt-2 absolute uppercase text-sm font-bold text-blue-400">
+        <label :for="fieldName" class="pt-2 absolute uppercase text-sm font-bold text-blue-400 tracking-wider">
             {{ label }}
         </label>
 

@@ -13,7 +13,7 @@ use Carbon\Carbon;
 
 class ContactsTest extends TestCase
 {
-    use RefreshDatabase;
+    // use RefreshDatabase;
 
     protected $user;
 
