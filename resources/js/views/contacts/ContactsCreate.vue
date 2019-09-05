@@ -1,37 +1,22 @@
 <template>
-    <div class="container pt-12">
+    <div class="container mt-12">
         <form @submit.prevent='submitForm'>
             <InputField
-                name='name'
-                label='Name'
-                placeholder='ex: Juan Dela Cruz'
-                @update:field='form.name = $event'
-            />
-            <InputField
-                name='email'
-                label='E-Mail'
-                placeholder='ex: juandelacruz@email.com'
-                @update:field='form.email = $event'
-            />
-            <InputField
-                name='company'
-                label='Company'
-                placeholder='ex: ABC Holdings'
-                @update:field='form.company = $event'
-            />
-            <InputField
-                name='birthday'
-                label='Birthday'
-                placeholder='MM/DD/YYYY'
-                @update:field='form.birthday = $event'
+                v-for="(inputField, index) in inputFields"
+                :key="index"
+                :fieldName=inputField.name
+                :label=inputField.label
+                :placeholder=inputField.placeholder
+                :errors="errors"
+                @update:field="updateFormValues(inputField.name, $event)"
             />
 
             <div class="pt-4 flex justify-end">
-                <button class="text-red-600 px-3 rounded shadow-md border-2 border-red-600 focus:outline-none focus:shadow-outline hover:bg-red-200 font-bold">
+                <button class="btn btn-cancel">
                     Cancel
                 </button>
 
-                <button class="ml-5 border-2 text-blue-600 rounded shadow-md border-blue-600 py-1 px-3 font-bold focus:shadow-outline hover:bg-blue-200 ">
+                <button class="btn btn-primary ml-5">
                     Add New Contact
                 </button>
             </div>
@@ -51,23 +36,54 @@
 
         data : function () {
             return {
+                inputFields : [
+                    {
+                        'name' : 'name',
+                        'label' : 'Name',
+                        'placeholder' : 'ex: Juan Dela Cruz',
+                    },
+                    {
+                        'name' : 'email',
+                        'label' : 'email',
+                        'placeholder' : 'ex: robertbrown@gmail.com',
+                    },
+                    {
+                        'name' : 'company',
+                        'label' : 'company',
+                        'placeholder' : 'Brown Catering Services',
+                    },
+                    {
+                        'name' : 'birthday',
+                        'label' : 'birthday',
+                        'placeholder' : 'MM/DD/YYYY',
+                    },
+                ],
+
                 form : {
                     'name' : '',
                     'email' : '',
                     'company' : '',
                     'birthday' : '',
-                }
+                },
+
+                errors : null
             }
         },
 
-        methods :{
+        methods : {
+            updateFormValues : function (fieldName, value) {
+                Object.defineProperty(this.form, fieldName, {
+                    value
+                })
+            },
+
             submitForm : function () {
                 axios.post('/api/contacts', this.form)
                     .then(response =>{
-
+                        
                     })
                     .catch(errors => {
-
+                        this.errors = errors.response.data.errors
                     })
             }
         }

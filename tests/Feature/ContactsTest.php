@@ -11,7 +11,7 @@ use App\User;
 use App\Contact;
 use Carbon\Carbon;
 
-class ContactTest extends TestCase
+class ContactsTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -82,7 +82,7 @@ class ContactTest extends TestCase
             'data' => [
                 [
                     'data' => [
-                        'contact_id' => $contact->id
+                        'id' => $contact->id
                     ]
                 ]
             ]
@@ -104,7 +104,7 @@ class ContactTest extends TestCase
         $response->assertStatus(Response::HTTP_CREATED);
         $response->assertJson([
             'data' => [
-                'contact_id' => $contact->id
+                'id' => $contact->id
             ],
             'links' => [
                 'self' => $contact->path()
@@ -164,7 +164,7 @@ class ContactTest extends TestCase
 
         $response->assertJson([
             'data' => [
-                'contact_id' => $contact->id,
+                'id' => $contact->id,
                 'name' => $contact->name,
                 'email' => $contact->email,
                 'birthday' => $contact->birthday->format('m/d/Y'),
@@ -207,7 +207,7 @@ class ContactTest extends TestCase
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJson([
             'data' => [
-                'contact_id' => $contact->id
+                'id' => $contact->id
             ],
             'links' => [
                 'self' => $contact->path()

@@ -17,4 +17,48 @@
 
 @tailwind components;
 
+.nav-link {
+    @apply pl-5 text-sm tracking-wide font-bold text-gray-800
+}
+
+.btn {
+    @apply uppercase text-sm tracking-wide rounded-full font-bold
+}
+
+.btn:focus {
+    @apply outline-none shadow-outline
+}
+
+.btn-cancel {
+    @apply text-red-600 px-3 shadow-md border-2 border-red-600 
+}
+
+.btn-cancel:hover {
+    @apply bg-red-200
+}
+
+.btn-primary {
+    @apply border-2 text-blue-600 shadow-md border-blue-600 py-1 px-3
+}
+
+.btn-primary:hover {
+    @apply bg-blue-200
+}
+
+.form-field-text-error {
+    @apply text-sm text-red-600 font-bold tracking-wide
+}
+
+.form-field-line-error {
+    @apply border-red-600
+}
+
+.btn-back {
+    @apply w-10 h-10 fill-current pr-1 text-gray-800 rounded-full
+}
+
+.btn-back:hover {
+    @apply text-white bg-blue-300
+}
+
 @tailwind utilities;
