@@ -23,12 +23,28 @@ class ContactRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name' => 'required',
-            'email' => 'required|email|unique:contacts',
-            'birthday' => 'required',
-            'company' => 'required',
-        ];
+        switch ($this->method()) {
+            case 'POST':
+            {
+                return [
+                    'name' => 'required',
+                    'email' => 'required|email|unique:contacts,email',
+                    'birthday' => 'required',
+                    'company' => 'required',
+                ];
+            }
+            case 'PATCH':
+            {
+                return [
+                    'name' => 'required',
+                    'email' => 'required|email|unique:contacts,email,' . $this->route('contact')->id,
+                    'birthday' => 'required',
+                    'company' => 'required',
+                ];
+            }
+            default:
+                break;
+        }
     }
 
      /**

@@ -10,7 +10,7 @@
             :class="errorClassObject()"
             :id="fieldName"
             :placeholder="placeholder"
-            v-model='value'
+            v-model="value"
             @input="updateField()"
         >
 
@@ -24,13 +24,14 @@
 
 <script>
     export default {
-        fieldName : 'InputField',
+        name : 'InputField',
 
         props : [
             'fieldName',
             'label',
             'placeholder',
             'errors',
+            'contactData',
         ],
 
         data : function () {
@@ -68,7 +69,13 @@
                 return {
                     'form-field-line-error' : this.hasError
                 }
+            },
+        },
+
+        watch : {
+            contactData : function (val) {
+                this.value = val
             }
         }
-    }
+    } 
 </script>
