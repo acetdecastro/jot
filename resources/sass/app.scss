@@ -19,6 +19,10 @@
 
 .nav-link {
     @apply pl-5 text-sm tracking-wide font-bold text-gray-800
+}   
+
+.nav-link:hover {
+    @apply text-blue-500
 }
 
 .btn {

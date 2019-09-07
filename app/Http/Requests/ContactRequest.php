@@ -29,7 +29,7 @@ class ContactRequest extends FormRequest
                 return [
                     'name' => 'required',
                     'email' => 'required|email|unique:contacts,email',
-                    'birthday' => 'required',
+                    'birthday' => 'required|date_format:m/d/Y',
                     'company' => 'required',
                 ];
             }
@@ -38,7 +38,7 @@ class ContactRequest extends FormRequest
                 return [
                     'name' => 'required',
                     'email' => 'required|email|unique:contacts,email,' . $this->route('contact')->id,
-                    'birthday' => 'required',
+                    'birthday' => 'required|date_format:m/d/Y',
                     'company' => 'required',
                 ];
             }

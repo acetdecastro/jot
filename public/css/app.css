@@ -641,6 +641,10 @@ video {
   color: #2d3748;
 }
 
+.nav-link:hover {
+  color: #4299e1;
+}
+
 .btn {
   text-transform: uppercase;
   font-size: 0.875rem;
