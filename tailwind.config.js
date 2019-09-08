@@ -2,10 +2,15 @@ module.exports = {
   theme: {
     extend: {
       width: {
-        '96': '24rem'
+        '96': '24rem',
+      },
+      container: {
+        center: true,
       },
     }
   },
-  variants: {},
+  variants: {
+    backgroundColor: ['responsive', 'hover', 'focus', 'active'],
+  },
   plugins: []
 }

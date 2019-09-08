@@ -21,4 +21,8 @@ Route::middleware(['auth:api'])->group(function (){
     Route::patch('/contacts/{contact}', 'ContactController@update');
     Route::delete('/contacts/{contact}', 'ContactController@destroy');
 
+    Route::get('/birthdays', 'BirthdayController@index');
+
+    Route::post('/search', 'SearchController@index');
+
 });

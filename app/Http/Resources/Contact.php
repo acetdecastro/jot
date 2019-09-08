@@ -16,11 +16,11 @@ class Contact extends JsonResource
     {
         return [
             'data' =>   [
-                'contact_id' => $this->id,
+                'id' => $this->id,
                 'name' => $this->name,
                 'email' => $this->email,
-                'birthday' => $this->birthday->format('m/d/Y'),
                 'company' => $this->company,
+                'birthday' => $this->birthday->format('m/d/Y'),
                 'last_updated' => $this->updated_at->diffForHumans(),
             ],
             'links' =>  [

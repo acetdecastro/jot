@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Log In')
+
 @section('content')
 <div class="mx-auto h-full flex justify-center items-center bg-gray-300">
     <div class="w-96 bg-blue-900 rounded-lg shadow-xl p-6">
@@ -22,25 +24,23 @@
                     {{ __('E-mail') }}
                 </label>
 
-                <div class="">
-                    <input
-                        id="email"
-                        type="email"
-                        class="pt-8 p-3 w-full rounded bg-blue-800 text-gray-100 outline-none focus:bg-blue-700 
-                            @error('email') border border-red-600 @enderror"
-                        name="email"
-                        value="{{ old('email') }}"
-                        autocomplete="email"
-                        autofocus
-                        placeholder="your@email.com"
-                    >
+                <input
+                    id="email"
+                    type="email"
+                    class="pt-8 p-3 w-full rounded bg-blue-800 text-gray-100 outline-none focus:bg-blue-700 
+                        @error('email') border border-red-600 @enderror"
+                    name="email"
+                    value="{{ old('email') }}"
+                    autocomplete="email"
+                    autofocus
+                    placeholder="your@email.com"
+                >
 
-                    @error('email')
-                        <span class="text-xs text-red-500 pt-1" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
+                @error('email')
+                    <span class="text-xs text-red-500 pt-1" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
             </div>
 
             <div class="relative pt-3">
@@ -78,7 +78,7 @@
             <div class="pt-6">
                 <button
                     type="submit"
-                    class="bg-gray-400 uppercase text-blue-800 py-2 w-full rounded font-bold hover:bg-gray-200"
+                    class="bg-gray-400 uppercase text-blue-800 py-2 w-full rounded font-bold hover:bg-gray-200 focus:outline-none"
                 >
                     Log In
                 </button>

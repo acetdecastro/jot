@@ -23,12 +23,28 @@ class ContactRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name' => 'required',
-            'email' => 'required|email',
-            'birthday' => 'required',
-            'company' => 'required',
-        ];
+        switch ($this->method()) {
+            case 'POST':
+            {
+                return [
+                    'name' => 'required',
+                    'email' => 'required|email|unique:contacts,email',
+                    'birthday' => 'required|date_format:m/d/Y',
+                    'company' => 'required',
+                ];
+            }
+            case 'PATCH':
+            {
+                return [
+                    'name' => 'required',
+                    'email' => 'required|email|unique:contacts,email,' . $this->route('contact')->id,
+                    'birthday' => 'required|date_format:m/d/Y',
+                    'company' => 'required',
+                ];
+            }
+            default:
+                break;
+        }
     }
 
      /**
@@ -40,7 +56,7 @@ class ContactRequest extends FormRequest
     {
         return [
             'name.required' => 'Name is required.',
-            'email.required' => 'Email is required.',
+            'email.required' => 'E-mail is required.',
             'email.email' => 'Email must be valid.',
             'birthday.required' => 'Birthday is required.',
             'company.required' => 'Company is required.',
