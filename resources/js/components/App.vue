@@ -64,10 +64,17 @@
                         Contacts
                     </div>
                     
-                    <UserCircle
-                        :name="user.name"
-                        :comingFrom="'appComponent'"
-                    />
+                    <div class="flex justify-between items-center">
+                        <div class="border mr-6">
+                            <SearchBar />
+                        </div>
+                        <div>
+                            <UserCircle
+                                :name="user.name"
+                                :comingFrom="'appComponent'"
+                            />
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Bottom Side Component -->
@@ -81,12 +88,14 @@
 
 <script>
     import UserCircle from './user/UserCircle'
+    import SearchBar from './search/SearchBar'
 
     export default {
         name : 'App',
 
         components : {
-            UserCircle
+            UserCircle,
+            SearchBar,
         },
 
         props : [

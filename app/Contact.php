@@ -6,8 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 use Carbon\Carbon;
 
+use Laravel\Scout\Searchable;
+
 class Contact extends Model
 {
+    use Searchable;
+
     protected $guarded = [];
 
     protected $dates  = ['birthday'];
