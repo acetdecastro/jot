@@ -23,4 +23,6 @@ Route::middleware(['auth:api'])->group(function (){
 
     Route::get('/birthdays', 'BirthdayController@index');
 
+    Route::post('/search', 'SearchController@index');
+
 });

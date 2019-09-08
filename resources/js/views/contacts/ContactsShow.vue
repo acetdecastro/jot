@@ -44,7 +44,7 @@
                         <!-- Delete Modal -->
                         <div
                             v-if="deleteModal"
-                            class="absolute z-20 right-0 font-bold bg-red-400 w-48 px-4 py-4 text-gray-900 border-2 mt-2 mr-6 border-red-500 shadow-lg rounded-lg text-center"
+                            class="absolute z-20 right-0 font-bold bg-red-300 w-48 px-4 py-4 text-gray-900 border mt-2 mr-6 border-red-500 shadow-lg rounded-lg text-center"
                         >
                             <!-- Close Button Modal -->
                             <div class="flex justify-end mr-1">

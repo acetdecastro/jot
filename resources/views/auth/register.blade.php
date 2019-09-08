@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Sign Up')
+
 @section('content')
     <div class="bg-gray-300 mx-auto h-full flex justify-center items-center">
         <div class="w-96 p-6 rounded-lg bg-blue-900 shadow-xl">

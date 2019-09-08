@@ -683,7 +683,7 @@ video {
 }
 
 .btn-primary:hover {
-  background-color: #bee3f8;
+  background-color: #ebf8ff;
 }
 
 .form-field-text-error {
@@ -760,6 +760,21 @@ video {
   border-color: #4299e1;
   font-weight: 700;
   font-size: 1.5rem;
+}
+
+.user-circle-contact-search {
+  border-radius: 9999px;
+  color: #fff;
+  background-color: #90cdf4;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-width: 2px;
+  border-color: #4299e1;
+  font-weight: 700;
 }
 
 .sr-only {

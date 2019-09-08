@@ -11,7 +11,7 @@
                         <h1 class="text-4xl font-bold tracking-wide text-blue-500">No contacts yet.</h1>
                         
                         <div class="pt-12">
-                            <router-link to="/contacts/create" class="px-5 py-2 border-2 bg-blue-200 border-blue-700 shadow-lg hover:bg-blue-600 focus:outline-none focus:shadow-outline text-gray-800 hover:text-blue-100 text-3xl font-bold tracking-wide rounded-full">
+                            <router-link to="/contacts/create" class="px-5 py-2 border-2 bg-blue-200 border-blue-700 shadow-lg hover:bg-blue-600 focus:outline-none focus:shadow-outline text-blue-700 hover:text-blue-100 font-bold uppercase tracking-wide rounded-full">
                                 Get Started
                             </router-link>
                         </div>
@@ -23,7 +23,7 @@
                         <h1 class="text-4xl font-bold tracking-wide text-blue-500">Oops, there's no contact with a birthday this month.</h1>
                         
                         <div class="pt-12">
-                            <router-link to="/contacts/create" class="px-5 py-2 border-2 bg-blue-200 border-blue-300 shadow-lg hover:bg-blue-600 focus:outline-none focus:shadow-outline text-gray-800 hover:text-blue-100 text-sm font-bold tracking-wide rounded-full">
+                            <router-link to="/contacts/create" class="px-5 py-2 border-2 bg-blue-200 border-blue-300 shadow-lg hover:bg-blue-600 focus:outline-none focus:shadow-outline text-gray-800 hover:text-blue-100 text-sm font-bold tracking-wide rounded-full uppercase">
                                 Add Him/Her Now
                             </router-link>
                         </div>

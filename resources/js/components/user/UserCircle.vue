@@ -20,6 +20,7 @@
                     'user-circle-header' : this.comingFrom === 'appComponent',
                     'user-circle-contact-show' : this.comingFrom === 'contactsShowComponent',
                     'user-circle-contact-index' : this.comingFrom === 'contactIndexComponent',
+                    'user-circle-contact-search' : this.comingFrom === 'searchResultModal',
                 } 
             }
         }
