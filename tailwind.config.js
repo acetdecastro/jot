@@ -4,9 +4,16 @@ module.exports = {
       width: {
         '96': '24rem',
       },
+
       container: {
         center: true,
       },
+
+    },
+
+    fontFamily : {
+      body: ['Lato', 'sans-serif'],
+      display: ['Lato', 'sans-serif'],
     }
   },
   variants: {
